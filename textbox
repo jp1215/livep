@@ -1,0 +1,103 @@
+You can also use the Completed event to validate the input when the user presses the Return key:
+private void textBox1_Completed(object sender, EventArgs e)
+{
+    string primaryKey = textBox1.Text;
+    if (!string.IsNullOrEmpty(primaryKey) && int.TryParse(primaryKey, out int primaryKeyNumber))
+    {
+        // The input is a valid primary key number
+    }
+    else
+    {
+        // The input is not a valid primary key number
+        textBox1.Text = string.Empty;
+    }
+}
+
+
+/////////////////////////////
+Here is an example of how you can validate the input in a textbox to only allow primary key numbers, with output:
+using System;
+using System.Windows.Forms;
+
+public class PrimaryKeyTextBox : Form
+{
+    private TextBox textBox1;
+    private Label label1;
+
+    public PrimaryKeyTextBox()
+    {
+        textBox1 = new TextBox();
+        textBox1.Location = new Point(10, 10);
+        textBox1.Size = new Size(200, 20);
+        textBox1.TextChanged += TextBox1_TextChanged;
+
+        label1 = new Label();
+        label1.Location = new Point(10, 40);
+        label1.Size = new Size(200, 20);
+
+        this.Controls.Add(textBox1);
+        this.Controls.Add(label1);
+    }
+
+    private void TextBox1_TextChanged(object sender, EventArgs e)
+    {
+        if (!string.IsNullOrEmpty(textBox1.Text))
+        {
+            int primaryKey;
+            if (int.TryParse(textBox1.Text, out primaryKey))
+            {
+                // The input is a valid primary key number
+                label1.Text = "Valid primary key: " + primaryKey;
+                label1.ForeColor = System.Drawing.Color.Green;
+            }
+            else
+            {
+                // The input is not a valid primary key number
+                label1.Text = "Invalid primary key";
+                label1.ForeColor = System.Drawing.Color.Red;
+                textBox1.Text = string.Empty;
+            }
+        }
+        else
+        {
+            label1.Text = string.Empty;
+        }
+    }
+
+    [STAThread]
+    static void Main()
+    {
+        Application.EnableVisualStyles();
+        Application.SetCompatibleTextRenderingDefault(false);
+        Application.Run(new PrimaryKeyTextBox());
+    }
+}
+/////////////////////////////////////////////
+If you want to restrict the input to only allow numbers, you can use the KeyPress event:
+
+
+private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
+{
+    if (!char.IsControl(e.KeyChar) &&!char.IsDigit(e.KeyChar))
+    {
+        e.Handled = true;
+    }
+}
+////////////////////////////////////////
+You can use the TextChanged event to validate the input in the textbox. Here's an example:
+private void textBox1_TextChanged(object sender, EventArgs e)
+{
+    if (!string.IsNullOrEmpty(textBox1.Text))
+    {
+        int primaryKey;
+        if (int.TryParse(textBox1.Text, out primaryKey))
+        {
+            // The input is a valid primary key number
+        }
+        else
+        {
+            // The input is not a valid primary key number
+            textBox1.Text = string.Empty;
+        }
+    }
+}
